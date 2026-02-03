@@ -25,24 +25,26 @@ class Router
         $uri = parse_url($_SERVER['REQUEST_URI'],PHP_URL_PATH);
 
         foreach ($this->routes as $route) {
-            
-        }
+            $pattern = str_replace(
+                '{id}',
+                '([0-9]+)',
+                $route['uri'],
+            );
+            $pattern = '#^' . $pattern . '$#';
 
+            if (preg_match($pattern, $uri, $matches)) {
+                array_shift($matches);
+                require_once './app/controllers/' .$route['controller'] . '.php';
 
-        if ($method == 'GET' && $uri == '/students'){
-            require_once './app/controllers/StudentController.php';
-            $controller = new StudentController();
-            $controller -> index();
-            return;
-        }
+                $controllerClass = 'App\\Controllers\\' .$route['controller'];
+                $controller = new $controllerClass();
+                $function = $route['function'];
 
-        if ($method == 'GET' && $uri == '/students/create'){
-            require_once './app/controllers/StudentController.php';
-            $controller = new StudentController();
-            $controller -> create();
-            return;
+                call_user_func_array([$controller, $function], $matches);
+                return;
+
+            }
         }
-        
 
         http_response_code(404);
         echo '<h1>404 - Page Not Found</h1>';
