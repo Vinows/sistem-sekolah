@@ -13,14 +13,16 @@ class Student extends Database
         $students = [];
 
         $query = "SELECT * FROM {$this->table}";
-        $stmt = $this->connection->prepare($query);
+        $stmt = $this->connection->prepare($query); 
+
+
         $stmt->execute();
 
-        $result = $stmt->get_result();
+        $result = $stmt->get_result();      
 
         while($student = $result->fetch_assoc()) {
             $students[] = $student;
-        }
+        }   
 
         return $students;
     }
