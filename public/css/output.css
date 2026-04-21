@@ -173,9 +173,6 @@
   }
 }
 @layer utilities {
-  .end {
-    inset-inline-end: var(--spacing);
-  }
   .col-span-2 {
     grid-column: span 2 / span 2;
   }
@@ -211,9 +208,6 @@
   }
   .grid {
     display: grid;
-  }
-  .table {
-    display: table;
   }
   .min-h-screen {
     min-height: 100vh;
